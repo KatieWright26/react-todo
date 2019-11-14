@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ToDoItem from './ToDoItem';
 import AddNewToDoTask from './AddNewToDoTask';
+import Header from './Header';
 
 const starterTasks = [
   { id: 1, description: 'Go for a run', done: true},
@@ -14,6 +15,7 @@ class ToDo extends Component {
     this.state = {
       tasks: starterTasks
     };
+    this.addNewItem = this.addNewItem.bind(this)
   }
 
   handleClick(e, task) {
@@ -22,22 +24,26 @@ class ToDo extends Component {
     })
   }
 
+  addNewItem(task) {
+    let nextId = this.findNextId(this.state.tasks);
+    this.setState((state) => {
+      return state.tasks.push({ id: nextId, description: task, done: false });
+    });
+  }
+
+  findNextId(tasks) {
+    let id = tasks.reduce((acc, t) => acc > t.id ? acc : acc = t.id, 0);
+    return id + 1;
+  }
+
   render() {
     const { tasks } = this.state;
-    const undoneTasks = tasks.reduce((acc, i) => i.done ? acc : acc + 1, 0)
+    const undoneTasks = tasks.reduce((acc, i) => i.done ? acc : acc + 1, 0);
+
     return (
       <div>
-          {undoneTasks > 0 ? (
-            <h1>
-              You have {undoneTasks} of {tasks.length} task
-              {tasks.length > 1 ? "s" : ""} left to do.
-            </h1>
-          ) : (
-            <h1>
-              No tasks remaining!
-            </h1>
-          )}
-        <AddNewToDoTask />
+        <Header undoneTasks={undoneTasks} tasks={tasks.length}/>
+        <AddNewToDoTask addNewItem={this.addNewItem}/>
         <ul className="listContainer">
           {tasks.map(task => (
             <ToDoItem
