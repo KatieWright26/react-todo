@@ -49,6 +49,7 @@ li {
 .listContainer li {
   color: #313638;
   text-decoration-color: #EF6461;
+  margin: 2em 0;
 }
 
 .listContainer li::before {
@@ -88,4 +89,8 @@ form input[type='submit'] {
 form input[type='submit']:hover {
   background-color: #F38E8C;
   border: 3px dashed white;
+}
+
+form input[type='submit']:focus {
+  outline-color: white;
 }
